@@ -22,6 +22,11 @@ const App: () => Node = () => {
   } catch (error) {
     console.log('Failed to create meetings table ' + error);
   }
+  try {
+    database.createHostMeetingsTable();
+  } catch (error) {
+    console.log('Failed to create host meetings table ' + error);
+  }
   return <Router />;
 };
 

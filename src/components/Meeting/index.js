@@ -1,13 +1,27 @@
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
+import { useNavigation } from '@react-navigation/native';
+
+const database = require('../Handlers/database.js');
 
 const Meeting = props => {
 
     const post = props.post;
+
+    const navigation = useNavigation();
     
     const onPress = () => {
-        console.log(post.title);
+        if (post.host_id) {
+            try {
+                database.addHostMeeting(post.host_id, post.id);
+            } catch (error) {
+                console.log('Error adding host meeting' + error);
+            }
+            alert('Meeting assigned to host!');
+        } else {
+            console.log(post.title);
+        }
     }
 
   return (

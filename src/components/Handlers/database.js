@@ -7,6 +7,7 @@ const schedulerDB = openDatabase({name: 'Scheduler.db'});
 // create constants for tables in database
 const hostTableName = 'hosts';
 const meetingTableName = 'meetings';
+const hostMeetingsTableName = 'host_meetings';
 
 module.exports = {
     // declare function that will create hosts table
@@ -93,6 +94,50 @@ module.exports = {
                 },
                 error => {
                     console.log('Error adding meeting ' + error.message);
+                },
+            );
+        });
+    },
+
+    // declare function that will create host meetings table
+    createHostMeetingsTable: async function () {
+        // declare transaction that will execute SQL
+        (await schedulerDB).transaction(txn => {
+            // execute SQL
+            txn.executeSql(
+                `CREATE TABLE IF NOT EXISTS ${hostMeetingsTableName}(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    host_id INTEGER,
+                    meeting_id INTEGER
+                );`,
+                // arguments passed when using SQL prepared statements
+                [],
+                // callback functions to handle results
+                () => {
+                    console.log('Host meetings table created successfully.');
+                },
+                error => {
+                    console.log('Error creating host meetings table ' + error.message);
+                },
+            );
+        });
+    },
+
+    // declare function that will insert a row of data into the host meetings table
+    addHostMeeting: async function (host_id, meeting_id) {
+        // declare transaction that will execute SQL
+        (await schedulerDB).transaction(txn => {
+            // execute SQL
+            txn.executeSql(
+                `INSERT INTO ${hostMeetingsTableName} (host_id, meeting_id) VALUES (${host_id}, ${meeting_id})`,
+                // arguments passed when using SQL prepared statements
+                [],
+                // callback functions to handle results
+                () => {
+                    console.log('Host meeting added successfully.');
+                },
+                error => {
+                    console.log('Error adding host meeting ' + error.message);
                 },
             );
         });

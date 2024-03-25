@@ -1,13 +1,15 @@
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 
 const Host = props => {
 
     const post = props.post;
+    const navigation = useNavigation();
     
     const onPress = () => {
-        console.log(post.name);
+        navigation.navigate('Existing Host', {post: post})
     }
 
   return (
